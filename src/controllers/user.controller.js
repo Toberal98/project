@@ -53,11 +53,14 @@ exports.delete = function (req, res) {
 };
 
 exports.login = function (req, res) {
-  User.findByUsernameAndPassword(req.params, function (err, usr) {
-    if (err === null) {
-      res.json({ error: true, login: false, usr: usr });
+  console.log(req);
+  User.findByUsernameAndPassword(req.body, function (err, usr) {
+    if (usr === null) {
+      res.json({ error: false, usr: usr, login: false });
     } else {
-      res.json({ error: false, usr: usr, login: true });
+      res.json({ error: true, login: true, usr: usr[0] });
+
     }
   });
 };
+

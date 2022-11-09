@@ -11,4 +11,5 @@ router.get('/:id', ParkController.findById);
 router.put('/:id', ParkController.update);
 // Delete a employee with id
 router.delete('/:id', ParkController.delete);
+router.get('/estadisticas/:id_user/:fechaDesde/:fechaHasta', ParkController.findByParams);
 module.exports = router

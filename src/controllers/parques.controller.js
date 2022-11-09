@@ -2,11 +2,11 @@
 const Parques = require("../models/parques.model");
 
 exports.findAll = function (req, res) {
-  Parques.findAll(function (err, usr) {
+  Parques.findAll(function (err, parks) {
     console.log("controller");
     if (err) res.send(err);
-    console.log("res", usr);
-    res.send(usr);
+    console.log("res", parks);
+    res.send(parks);
   });
 };
 exports.create = function (req, res) {
@@ -55,3 +55,12 @@ exports.delete = function (req, res) {
     res.json({ error: false, message: "Park successfully deleted" });
   });
 };
+
+exports.findByParams = function(req,res){
+  Parques.getEstadistica(req.params.id_user,req.params.fechaDesde, req.params.fechaHasta,function(err, estadisticas){
+    console.log("controller");
+    if (err) res.send(err);
+    console.log("res", estadisticas);
+    res.send(estadisticas);
+  })
+}

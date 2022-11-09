@@ -44,6 +44,17 @@ Estadistica.findAll = function (result) {
     }
   });
 };
+Estadistica.findAll = function (result) {
+  dbConn.query("Select * from estadisticas", function (err, res) {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+    } else {
+      console.log("estadisticas : ", res);
+      result(null, res);
+    }
+  });
+};
 Estadistica.update = function (id, e, result) {
   dbConn.query(
     "UPDATE estadisticas SET id_parque=?,tipo=?, fecha=?, cantidad=? WHERE id = ?",
@@ -74,4 +85,19 @@ Estadistica.delete = function (id, result) {
     }
   });
 };
+
+
+Estadistica.getEstadistica = function (id_user, fechaDesde, fechaHasta, result){
+  dbConn.query("select p.id, p.nombre, IFNULL(sum(e.cantidad),0)  cantidad from parques p inner join usuario_parque up on up.id_parque = p.id left join estadisticas e on p.id = e.id_parque left join tipovisitante t on t.id = e.tipo where up.id_usuario = ? and  e.fecha between STR_TO_DATE(?,'%d-%m-%Y') and STR_TO_DATE(?,'%d-%m-%Y')  group by p.nombre 	order by e.fecha"
+  ,
+  [id_user,fechaDesde,fechaHasta],function(err, res){
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+    } else {
+      result(null, res);
+    }
+  }
+  )
+}
 module.exports = Estadistica;

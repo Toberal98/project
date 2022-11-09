@@ -5,7 +5,7 @@ var md5 =require("md5");
 var User = function (User) {
   this.nombre = User.nombre;
   this.usuario = User.usuario;
-  this.contrasenia = md5(User.contrasenia);
+  this.contrasenia = !User.id || User.modifiedPassword?md5(User.contrasenia):User.contrasenia;
   this.dui = User.dui;
   this.tipo = User.tipo;
   this.activo = User.activo;
@@ -50,7 +50,7 @@ User.findByUsernameAndPassword = function (usr, result) {
 
   if (username && password) {
     dbConn.query(
-      "SELECT u.nombre, u.usuario, u.dui, u.tipo, u.activo FROM usuario u where u.usuario = ? and u.contrasenia =  ?",
+      "SELECT u.id,u.nombre, u.usuario, u.dui, u.tipo, u.activo FROM usuario u where u.usuario = ? and u.contrasenia = ? and u.activo = 1",
       [username, password],
       function (error, results, fields) {
         if (error) throw error;
@@ -68,14 +68,14 @@ User.findByUsernameAndPassword = function (usr, result) {
 };
 User.update = function (id, usr, result) {
   dbConn.query(
-    "UPDATE usuario SET nombre=?,usuario=?,contrasenia=?,dui=?,tipo=?, activo=? WHERE id = ?",
+    "UPDATE usuario SET nombre=?,usuario=?, dui=?,tipo=?, activo=?,contrasenia=? WHERE id = ?",
     [
       usr.nombre,
       usr.usuario,
-      usr.contrasenia,
       usr.dui,
       usr.tipo,
       usr.activo,
+      usr.contrasenia,
       id,
     ],
     function (err, res) {

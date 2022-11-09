@@ -3,6 +3,8 @@ const router = express.Router()
 const Estadistica =   require('../controllers/estadistica.controller');
 // Retrieve all employees
 router.get('/', Estadistica.findAll);
+router.get('/estadisticas/:id_user/:fechaDesde/:fechaHasta', Estadistica.findGrafics);
+
 // Create a new employee
 router.post('/', Estadistica.create);
 // Retrieve a single employee with id

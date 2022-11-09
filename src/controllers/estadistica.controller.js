@@ -9,6 +9,14 @@ exports.findAll = function (req, res) {
     res.send(e);
   });
 };
+exports.findGrafics = function (req, res) {
+  Estadistica.getEstadistica(req.params.id_user,req.params.fechaDesde, req.params.fechaHasta,function(err, estadisticas){
+    console.log("controller");
+    if (err) res.send(err);
+    console.log("res", estadisticas);
+    res.send(estadisticas);
+  })
+};
 exports.create = function (req, res) {
   const newE = new Estadistica(req.body);
   //handles null error

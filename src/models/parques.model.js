@@ -70,4 +70,18 @@ Parques.delete = function (id, result) {
     }
   });
 };
+
+Parques.getEstadistica = function (id_user, fechaDesde, fechaHasta, result){
+  dbConn.query("select p.id id_park, p.nombre, e.fecha, t.tipo ,  IFNULL(sum(e.cantidad),0)  cantidad from parques p inner join usuario_parque up on up.id_parque= p.id left join estadisticas e on p.id = e.id_parque left join tipovisitante t on t.id = e.tipo where up.id_usuario = ? and  e.fecha between STR_TO_DATE(?,'%d-%m-%Y') and STR_TO_DATE(?,'%d-%m-%Y')  group by p.nombre , e.fecha , e.tipo 	order by e.fecha"
+  ,
+  [id_user,fechaDesde,fechaHasta],function(err, res){
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+    } else {
+      result(null, res);
+    }
+  }
+  )
+}
 module.exports = Parques;

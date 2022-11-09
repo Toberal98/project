@@ -3,7 +3,7 @@ const router = express.Router()
 const UsrController =   require('../controllers/user.controller');
 // Retrieve all employees
 router.get('/', UsrController.findAll);
-router.get('/:username/:password', UsrController.login);
+router.post('/login', UsrController.login);
 // Create a new employee
 router.post('/', UsrController.create);
 // Retrieve a single employee with id
